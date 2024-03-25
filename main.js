@@ -4,6 +4,7 @@ const section = document.querySelector("section");
 const main = document.querySelector("main");
 const footer = document.querySelector("footer")
 
+
 let todos = [];
 
 inpt.addEventListener("keydown", (e) => {
@@ -23,7 +24,7 @@ function updatePage() {
         };
         todos.push(task);
         main.classList.add("active");
-        updateDOM();
+        addTask();
         display();
         filterTasks(activeCategory);
     }
@@ -46,20 +47,22 @@ function deleteTask(taskId) {
     const task = todos.find(task => task.id === taskId);
     if (task) {
         todos = todos.filter(task => task.id !== taskId);
-        updateDOM();
+        addTask();
         display();
         filterTasks(activeCategory);
+        addToLocalStorage()
     }
 }
 
 function clearCompleted() {
     todos = todos.filter(task => !task.completed);
-    updateDOM();
+    addTask();
     display();
     filterTasks('all');
+    addToLocalStorage()
 }
 
-function updateDOM() {
+function addTask() {
     section.innerHTML = "";
     todos.forEach(task => {
         const taskElement = document.createElement("div");
@@ -76,6 +79,7 @@ function updateDOM() {
         <div class="line"></div>`;
         section.append(taskElement);
     });
+    addToLocalStorage()
 }
 
 
@@ -84,9 +88,10 @@ function completedTask(taskId) {
     if (task) {
         task.completed = !task.completed;
         const currentFilter = activeCategory;
-        updateDOM();
+        addTask();
         display();
         filterTasks(currentFilter);
+        addToLocalStorage()
     }
 }
 
@@ -126,3 +131,20 @@ function filterTasks(taskCategory) {
     activeCategory = taskCategory;
     categoryFilter(activeCategory);
 }
+
+function addToLocalStorage() {
+    localStorage.setItem("data", JSON.stringify(todos));
+}
+
+
+function loadDataFromLocalStorage() {
+    const savedData = localStorage.getItem("data");
+    if (savedData) {
+        todos = JSON.parse(savedData);
+        addTask();
+        display();
+        filterTasks(activeCategory);
+    }
+}
+
+loadDataFromLocalStorage();
