@@ -1,21 +1,97 @@
-const inpt = document.querySelector("input");
+const input = document.querySelector("input");
 const specs = document.querySelector(".specs");
 const section = document.querySelector("section");
+const header = document.querySelector("header")
+const body = document.querySelector("body")
 const main = document.querySelector("main");
 const footer = document.querySelector("footer")
 
 
+const themeChangerButtons = document.querySelectorAll(".themeIcon");
+const themeChangerButton1 = themeChangerButtons[0]
+const themeChangerButton2 = themeChangerButtons[1]
+const themeChangerButton3 = themeChangerButtons[2]
+const themeChangerButton4 = themeChangerButtons[3]
+
+
+
 let todos = [];
 
-inpt.addEventListener("keydown", (e) => {
+let theme = "light";
+
+function toggleTheme() {
+    theme = theme === "light" ? "dark" : "light";
+    updateTheme();
+    categoryFilter(activeCategory)
+    addTask()
+}
+
+function updateTheme() {
+    if (theme === "light") {
+        themeChangerButton2.classList.add("hidden");
+        themeChangerButton4.classList.add("hidden");
+        themeChangerButton1.classList.remove("hidden");
+        themeChangerButton3.classList.remove("hidden");
+        body.classList.remove("darkModeBody")
+        header.classList.remove("darkModeHeader")
+        input.classList.remove("darkModeBars")
+        input.classList.remove("darkModeInput")
+        main.classList.remove("darkModeBars")
+        main.classList.remove("darkModeTask")
+    } else if (theme === "dark") {
+        themeChangerButton1.classList.add("hidden");
+        themeChangerButton3.classList.add("hidden");
+        themeChangerButton2.classList.remove("hidden");
+        themeChangerButton4.classList.remove("hidden");
+        body.classList.add("darkModeBody")
+        header.classList.add("darkModeHeader")
+        input.classList.add("darkModeBars")
+        input.classList.add("darkModeInput")
+        main.classList.add("darkModeBars")
+        main.classList.add("darkModeTask")
+    }
+
+    localStorage.setItem('theme', theme);
+}
+
+themeChangerButtons.forEach(button => {
+    button.addEventListener("click", toggleTheme);
+});
+
+function loadThemeFromLocalStorage() {
+    const storedTheme = localStorage.getItem('theme');
+    if (storedTheme) {
+        theme = storedTheme;
+        updateTheme();
+    }
+}
+
+loadThemeFromLocalStorage();
+
+themeChangerButtons.forEach(button => {
+    button.addEventListener("click", toggleTheme);
+});
+
+if (theme === "light") {
+    themeChangerButton2.classList.add("hidden");
+    themeChangerButton4.classList.add("hidden");
+} else if (theme === "dark") {
+    themeChangerButton1.classList.add("hidden");
+    themeChangerButton3.classList.add("hidden");
+}
+
+console.log(theme);
+
+
+input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
         updatePage();
-        inpt.value = "";
+        input.value = "";
     }
 });
 
 function updatePage() {
-    const inputValue = inpt.value.trim();
+    const inputValue = input.value.trim();
     if (inputValue !== "") {
         const task = {
             title: inputValue,
@@ -76,11 +152,13 @@ function addTask() {
             </div>
             <img onclick="deleteTask(${task.id})" class="delete" src="./assets/mobile/delete.svg">
         </div>
-        <div class="line"></div>`;
+        <div class="${theme === "dark" ? "darkModeLine" : "line"}"></div>`;
         section.append(taskElement);
     });
     addToLocalStorage()
 }
+
+
 
 
 function completedTask(taskId) {
@@ -101,7 +179,7 @@ let activeCategory = 'all';
 
 function categoryFilter(activeCategory) {
     footer.innerHTML = `
-    <div class="panel">
+    <div class="panel ${theme === "dark" ? "darkModePanel" : ""}">
     <h1 class="${activeCategory === 'all' ? "activatedCategory" : ""}" id="allCategory" onclick="filterTasks('all')">All</h1>
     <h1 class="${activeCategory === 'active' ? "activatedCategory" : ""}" id="activeCategory" onclick="filterTasks('active')">Active</h1>
     <h1 class="${activeCategory === 'completed' ? "activatedCategory" : ""}" id="completedCategory" onclick="filterTasks('completed')">Completed</h1>
@@ -148,3 +226,4 @@ function loadDataFromLocalStorage() {
 }
 
 loadDataFromLocalStorage();
+

@@ -18,6 +18,8 @@
     --taskListDarkmode: #C8CBE7;
     --background: #FAFAFA;
     --white: #FFF;
+    --darkModeBody: #171823;
+    --darkModeBars: #25273D;
 
 }
 
@@ -50,7 +52,6 @@ h3 {
 }
 
 p {
-    color: #494C6B;
     color: var(--taskList);
     font-size: 12px;
     font-weight: 400;
@@ -106,7 +107,7 @@ input[type=text] {
 }
 
 input[type=text] {
-    color: #393A4B;
+    color: var(--typing);
     padding: 18px 15px 18px 52px;
 }
 
@@ -209,30 +210,56 @@ section {
     cursor: pointer;
 }
 
-.hidden {
-    display: none;
+.panel h1,
+.themeIcon {
+    cursor: pointer;
 }
 
-.panel h1 {
-    cursor: pointer;
+.panel h1:hover,
+.clearAllTasks:hover {
+    color: var(--taskList);
 }
 
 .activatedCategory {
     color: var(--blue);
 }
 
-.top h1 {
-    font-weight: 700;
-    font-size: 40px;
-    line-height: 40px;
-    letter-spacing: 15px;
-    color: var(--white);
-}
-
-.top h1,
-.desktopMoonIcon {
+.desktopLogo,
+.desktopMoonIcon,
+.desktopSunIcon,
+.hidden {
     display: none;
 }
+
+.darkModeBody {
+    background-color: var(--darkModeBody);
+}
+
+.darkModeHeader {
+    background-image: url("./assets/mobile/background-darkmode-mobile.svg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.darkModeBars, .darkModePanel {
+    background-color: var(--darkModeBars);
+    box-shadow: 0px 35px 50px -15px #00000080;
+    
+}
+
+.darkModeInput::placeholder{
+    color: var(--placeholderDarkmode);
+}
+
+.darkModeInput[type=text], .darkModeTask{
+    color: var(--taskListDarkmode);
+}
+
+.darkModeLine {
+    border-bottom: 1px solid var(--typing);
+}
+
+
 
 
 @media (width >=600px) {
@@ -261,13 +288,15 @@ section {
         width: 18px;
     }
 
-    .top h1,
-    .desktopMoonIcon {
+    .desktopLogo,
+    .desktopMoonIcon,
+    .desktopSunIcon {
         display: flex;
     }
 
     .mobileLogo,
-    .mobileMoonIcon {
+    .mobileMoonIcon,
+    .mobileSunIcon {
         display: none;
     }
 
@@ -309,6 +338,14 @@ section {
 
     .specs {
         padding: 16px 24px 18px;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .darkModeHeader {
+        background-image: url("./assets/desktop/background-darkmode-desktop.svg");
     }
 
 }
