@@ -20,6 +20,8 @@
     --white: #FFF;
     --darkModeBody: #171823;
     --darkModeBars: #25273D;
+    --darkmodeInfo: #5B5E7E;
+    --darkModeInfoHover: #E3E4F1;
 
 }
 
@@ -201,9 +203,18 @@ section {
     background-size: 28px;
 }
 
-.completed {
+.completedLightMode {
     text-decoration: line-through;
     color: var(--completed);
+}
+
+.completedDarkMode {
+    text-decoration: line-through;
+    color: var(--completedDarkmode);
+}
+
+.textDarkMode {
+    color: var(--taskListDarkmode);
 }
 
 .clearAllTasks {
@@ -241,26 +252,42 @@ section {
     background-repeat: no-repeat;
 }
 
-.darkModeBars, .darkModePanel {
+.darkModeBars,
+.darkModePanel {
     background-color: var(--darkModeBars);
     box-shadow: 0px 35px 50px -15px #00000080;
-    
+
 }
 
-.darkModeInput::placeholder{
+.darkModeInput::placeholder {
     color: var(--placeholderDarkmode);
 }
 
-.darkModeInput[type=text], .darkModeTask{
+.darkModeInput[type=text] {
     color: var(--taskListDarkmode);
+    background-image: url("./assets/mobile/circle-darkmode.svg");
 }
 
 .darkModeLine {
     border-bottom: 1px solid var(--typing);
 }
 
+.darkModeTask {
+    color: var(--taskListDarkmode);
+}
 
+.darkModeInfo {
+    color: var(--darkmodeInfo);
+}
 
+.darkModeInfoHover {
+    color: var(--darkmodeInfo);
+    cursor: pointer;
+}
+
+.darkModeInfoHover:hover {
+    color: var(--darkModeInfoHover);
+}
 
 @media (width >=600px) {
 

@@ -24,6 +24,8 @@ function toggleTheme() {
     updateTheme();
     categoryFilter(activeCategory)
     addTask()
+    display()
+    categoryFilter(activeCategory)
 }
 
 function updateTheme() {
@@ -37,7 +39,6 @@ function updateTheme() {
         input.classList.remove("darkModeBars")
         input.classList.remove("darkModeInput")
         main.classList.remove("darkModeBars")
-        main.classList.remove("darkModeTask")
     } else if (theme === "dark") {
         themeChangerButton1.classList.add("hidden");
         themeChangerButton3.classList.add("hidden");
@@ -48,7 +49,6 @@ function updateTheme() {
         input.classList.add("darkModeBars")
         input.classList.add("darkModeInput")
         main.classList.add("darkModeBars")
-        main.classList.add("darkModeTask")
     }
 
     localStorage.setItem('theme', theme);
@@ -80,7 +80,6 @@ if (theme === "light") {
     themeChangerButton3.classList.add("hidden");
 }
 
-console.log(theme);
 
 
 input.addEventListener("keydown", (e) => {
@@ -109,8 +108,8 @@ function updatePage() {
 function display() {
     const count = todos.filter(task => !task.completed).length;
     specs.innerHTML = `
-    <h3>${count} items left</h3>
-    <h3 onclick="clearCompleted()" class="clearAllTasks">Clear Completed</h3>`;
+    <h3 class="${theme === "dark" ? "darkModeInfo" : ""}">${count} items left</h3>
+    <h3 onclick="clearCompleted()" class="${theme === "dark" ? "darkModeInfoHover" : "clearAllTasks"}">Clear Completed</h3>`;
 
     if (todos.length === 0) {
         main.classList.remove("active");
@@ -142,13 +141,16 @@ function addTask() {
     section.innerHTML = "";
     todos.forEach(task => {
         const taskElement = document.createElement("div");
+        const circle = theme === "dark" ? "./assets/mobile/circle-darkmode.svg" : "./assets/mobile/circle.svg"
+        const completedClass = task.completed && (theme === "dark" || theme === "light") ? (task.completed && theme === "dark" ? "completedDarkMode" : "completedLightMode") : (theme === "light" ? "" : "textDarkMode");
+
         taskElement.classList.add("box");
         taskElement.id = `${task.id}`
         taskElement.innerHTML = `
         <div class="task">
             <div class="left">
-                <img onclick="completedTask(${task.id})" class="circle" src="${task.completed ? './assets/desktop/checked.svg' : './assets/mobile/circle.svg'}">
-                <p id="${task.id}" class="${task.completed ? 'completed' : ''}">${task.title}</p>
+                <img onclick="completedTask(${task.id})" class="circle" src="${task.completed ? './assets/desktop/checked.svg' : `${circle}`}">
+                <p id="${task.id}" class="${completedClass}">${task.title}</p>
             </div>
             <img onclick="deleteTask(${task.id})" class="delete" src="./assets/mobile/delete.svg">
         </div>
@@ -157,9 +159,6 @@ function addTask() {
     });
     addToLocalStorage()
 }
-
-
-
 
 function completedTask(taskId) {
     const task = todos.find(task => task.id === taskId);
@@ -178,6 +177,9 @@ categoryFilter('all');
 let activeCategory = 'all';
 
 function categoryFilter(activeCategory) {
+    const darkMode = theme === "dark" ? "darkModeInfoHover" : ""
+    let active = darkMode && activeCategory === 'all' ? "activatedCategory" : ""
+
     footer.innerHTML = `
     <div class="panel ${theme === "dark" ? "darkModePanel" : ""}">
     <h1 class="${activeCategory === 'all' ? "activatedCategory" : ""}" id="allCategory" onclick="filterTasks('all')">All</h1>
@@ -185,6 +187,7 @@ function categoryFilter(activeCategory) {
     <h1 class="${activeCategory === 'completed' ? "activatedCategory" : ""}" id="completedCategory" onclick="filterTasks('completed')">Completed</h1>
     </div>`;
 }
+
 
 function filterTasks(taskCategory) {
     todos.forEach(item => {
