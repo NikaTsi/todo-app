@@ -289,6 +289,21 @@ section {
     color: var(--darkModeInfoHover);
 }
 
+.rotation-animation {
+    animation: rotate 800ms ease-in-out;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
 @media (width >=600px) {
 
     body,

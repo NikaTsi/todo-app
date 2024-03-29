@@ -177,9 +177,6 @@ categoryFilter('all');
 let activeCategory = 'all';
 
 function categoryFilter(activeCategory) {
-    const darkMode = theme === "dark" ? "darkModeInfoHover" : ""
-    let active = darkMode && activeCategory === 'all' ? "activatedCategory" : ""
-
     footer.innerHTML = `
     <div class="panel ${theme === "dark" ? "darkModePanel" : ""}">
     <h1 class="${activeCategory === 'all' ? "activatedCategory" : ""}" id="allCategory" onclick="filterTasks('all')">All</h1>
@@ -229,4 +226,3 @@ function loadDataFromLocalStorage() {
 }
 
 loadDataFromLocalStorage();
-
